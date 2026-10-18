@@ -1,0 +1,21 @@
+SAKURA HASEGAWA 写真入りホームページ 更新ガイド
+
+【まず見る】
+ZIPを解凍して index.html をブラウザで開くとトップページ、JOURNAL を押すとブログが開きます。インターネット公開はまだしていません。
+
+【写真を変更】
+images フォルダ内の写真を同じファイル名で置き換えると変更できます。
+hero-purple.jpg：トップ画像 / green.jpg：プロフィール / concert-memory.jpg：ブログ案内 / purple-front.jpg、blue-dress.jpg、purple-close.jpg：ギャラリー
+
+【ブログを追加】
+posts.js を編集。記事の { ... } をコピーし、カンマで区切って追加します。id は英数字で一意に、category は diary または column、date は YYYY-MM-DD。body はバッククォートで囲み、改行可能。image に images/写真名.jpg を入れると写真を表示できます。
+※今の2記事はサンプルです。公開前に削除または書き換えてください。
+
+【演奏会を追加】
+index.html の「Upcoming Concerts」の案内部分を演奏会情報に差し替えてください。必要なら、今後は入力データだけを編集する方式にも変更できます。
+
+【公開】
+GitHub Pages 等の静的サイトにアップロードすれば公開可能です。GitHub Pages の無料公開には公開リポジトリなどの条件があります。公開前に、写真の公開許可と連絡先を確認してください。
+
+【ギャラリー】gallery.html に写真を掲載しています。images 内の gallery- で始まる画像を利用しています。
+「くにたち音大 神奈川同調会の集い」の集合写真（IMG_3357.jpeg）は含めていません。
