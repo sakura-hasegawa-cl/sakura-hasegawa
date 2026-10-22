@@ -11,9 +11,12 @@
  const put=(id,items,empty)=>{const el=document.getElementById(id);if(el)el.innerHTML=items.length?items.map(card).join(''):`<p class="concert-empty">${empty}</p>`};
  function render(events){events=events.filter(e=>day(e.date)&&e.title).map(e=>({...e,date:day(e.date)}));const now=today();const future=events.filter(e=>e.date>=now).sort((a,b)=>a.date.localeCompare(b.date));const past=events.filter(e=>e.date<now).sort((a,b)=>b.date.localeCompare(a.date));put('upcoming-concerts',future.slice(0,3),'現在ご案内できる演奏会はありません。');put('all-upcoming',future,'現在ご案内できる演奏会はありません。');put('past-concerts',past,'過去の演奏会はありません。')}
  function notice(msg){const el=document.getElementById('concert-notice');if(el)el.textContent=msg}
+function loadBackup(){fetch('concerts-cache.json?t='+Date.now()).then(r=>{if(!r.ok)throw Error('Backup unavailable');return r.json()}).then(data=>{if(!Array.isArray(data))throw Error('Invalid backup');render(data);notice('')}).catch(()=>{render([]);notice('演奏会情報を取得できませんでした。')})}
  // JSONP avoids cross-origin restrictions of Google Apps Script ContentService.
- const callback='sakuraConcertsCallback';let done=false;const script=document.createElement('script');const timer=setTimeout(()=>{if(!done){done=true;render([]);notice('演奏会情報を取得できませんでした。Apps Script のJSONP設定をご確認ください。')}},12000);
+ const callback='sakuraConcertsCallback';let done=false;const script=document.createElement('script');const timer=setTimeout(()=>{if(!done){done=true;loadBackup()}},12000);
  window[callback]=data=>{if(done)return;done=true;clearTimeout(timer);if(!Array.isArray(data)){render([]);notice('演奏会データの形式を確認してください。');return}render(data)};
- script.onerror=()=>{if(!done){done=true;clearTimeout(timer);render([]);notice('演奏会情報を取得できませんでした。')}};
+ 
+script.onerror=()=>{if(!done){done=true;clearTimeout(timer);loadBackup()}};
+
  script.src=API+'?callback='+callback+'&t='+Date.now();document.head.appendChild(script);
 })();
